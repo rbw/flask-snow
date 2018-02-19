@@ -1,0 +1,3 @@
+Flask>=0.12.2
+flask-snow>=0.2.0
+
