@@ -7,10 +7,10 @@
 .. image:: https://img.shields.io/badge/License-MIT-green.svg
     :target: https://opensource.org/licenses/MIT
     
-flask-snow
-============
+flask-snow :factory:
+===========
 
-Easily create apps on top of the ServiceNow REST API.
+Build flask apps on top of the ServiceNow REST API.
 
 - Uses the lightweight `Flask microframework <http://flask.pocoo.org>`_ and the `pysnow library <https://github.com/rbw0/pysnow>`_.
 - Supports OAuth for a seamless authentication / authorization experience.
@@ -70,6 +70,6 @@ Created by Robert Wikman <rbw@vault13.org> in 2018
 
 JetBrains
 ---------
-Thank you `Jetbrains <www.jetbrains.com>`_ for creating pycharm and for providing me with free licenses
+Thank you `Jetbrains <http://www.jetbrains.com>`_ for creating pycharm and for providing me with free licenses
 
 
