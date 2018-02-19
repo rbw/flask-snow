@@ -29,34 +29,41 @@ Installation
 Usage
 -----
 
-Minimal example.
+Minimal server. Does the following:
 
-Reads *config*, sets up the *snow extension* and creates a route at **/incidents**, returning a single incident by number.
+#. Sets config
+#. Creates ``Snow`` instance
+#. Queries the *incident table* by number
+#. Returns *JSON representation* of the result
 
 .. code-block:: python
 
-    from flask import Flask, request, jsonify
+    from flask import Flask, request, abort, jsonify
     from flask_snow import Snow
 
     app = Flask(__name__)
-    app.config.from_object('settings')
+    #app.config.from_object('settings')
+    app.config['SNOW_INSTANCE'] = '<instance name>'
+    app.config['SNOW_USER'] = '<user name>'
+    app.config['SNOW_PASSWORD'] = '<password>'
 
     snow = Snow(app)
 
     @app.route('/incidents/<number>')
     def incident(number):
         incident = snow.resource(api_path='/table/incident')
-        data = incident.get(query={'number': number}).one()
-        return jsonify(data)
+        response = incident.get(query={'number': number}).one_or_none() or {}
+        return jsonify(response)
 
     if __name__ == '__main__':
         app.run()
 
 
+
 Name it **server.py** and run with ``python server.py``
 
 
-Check out the /examples for more!
+Check out the **examples directory** for more!
 
 
 Compatibility
