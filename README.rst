@@ -10,9 +10,10 @@
 flask-snow
 ============
 
-Uses the lightweight `Flask microframework <http://flask.pocoo.org>`_ and the `pysnow library <https://github.com/rbw0/pysnow>`_.
+Easily create apps on top of the ServiceNow REST API.
 
-Furthermore, it supports OAuth for seamless authentication / authorization.
+- Uses the lightweight `Flask microframework <http://flask.pocoo.org>`_ and the `pysnow library <https://github.com/rbw0/pysnow>`_.
+- Supports OAuth for a seamless authentication / authorization experience.
 
 
 Documentation
