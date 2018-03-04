@@ -12,7 +12,7 @@
 """
 
 __author__ = "Robert Wikman <rbw@vault13.org>"
-__version__ = "0.2.4"
+__version__ = "0.2.5"
 
 import warnings
 
@@ -33,6 +33,7 @@ class Snow(object):
     def __init__(self, app=None):
         self._client_type_oauth = self._client_type_basic = False
         self._session = None
+        self._parameters = None
         self._token_updater = None
 
         if app is not None:
@@ -141,6 +142,9 @@ class Snow(object):
         if resource_id not in conn['resources']:
             # Create new resource and add to context
             conn['resources'].update({resource_id: conn['client'].resource(*args, **kwargs)})
+        else:
+            # Reuse object, reset sysparms
+            conn['resources'][resource_id].parameters = conn['client'].parameters
 
         return conn['resources'][resource_id]
 
