@@ -47,7 +47,7 @@ class Snow(object):
 
         :param app: App passed from constructor or directly to init_app (factory)
         :param session: requests-compatible session to pass along to init_app
-        :param parameters: `ParamsBuilder` object passed to `Client` upon instantiation
+        :param parameters: `ParamsBuilder` object passed to `Client` after instantiation
         :raises:
             - ConfigError - if unable to determine client type
         """
