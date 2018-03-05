@@ -61,7 +61,7 @@ Minimal server. Does the following:
 Name it **server.py** and run with ``python server.py``
 
 
-Check out the `examples <https://github.com/rbw0/flask-snow/tree/master/examples/oauth_api_server>`_  for more!
+Check out the `examples <https://github.com/rbw0/flask-snow/tree/master/examples>`_  for more!
 
 
 Compatibility
