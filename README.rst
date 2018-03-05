@@ -7,13 +7,12 @@
 .. image:: https://img.shields.io/badge/License-MIT-green.svg
     :target: https://opensource.org/licenses/MIT
     
-flask-snow :factory:
+flask-snow
 ===========
 
-Build apps on top of the ServiceNow REST API using the lightweight `Flask microframework <http://flask.pocoo.org>`_
+Build apps on top of the ServiceNow REST API using the fantastic `Flask micro-framework <http://flask.pocoo.org>`_, with the help of the `pysnow library <https://github.com/rbw0/pysnow>`_.
 
-- Uses the `pysnow library <https://github.com/rbw0/pysnow>`_.
-- Supports OAuth for a seamless authentication / authorization experience.
+Additionally, it supports OAuth for a seamless authentication / authorization experience.
 
 
 Documentation
