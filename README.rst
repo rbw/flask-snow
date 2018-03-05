@@ -12,7 +12,7 @@ flask-snow :factory:
 
 Build apps on top of the ServiceNow REST API using the lightweight `Flask microframework <http://flask.pocoo.org>`_
 
-- Uses and the `pysnow library <https://github.com/rbw0/pysnow>`_.
+- Uses the `pysnow library <https://github.com/rbw0/pysnow>`_.
 - Supports OAuth for a seamless authentication / authorization experience.
 
 
