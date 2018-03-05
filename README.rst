@@ -12,7 +12,7 @@ flask-snow
 
 Build apps on top of the ServiceNow REST API using the fantastic `Flask micro-framework <http://flask.pocoo.org>`_, with the help of the `pysnow library <https://github.com/rbw0/pysnow>`_.
 
-Additionally, it supports OAuth for a seamless authentication / authorization experience.
+Additionally, the extension supports OAuth for a seamless authentication & authorization experience.
 
 
 Documentation
@@ -37,11 +37,10 @@ Minimal server. Does the following:
 
 .. code-block:: python
 
-    from flask import Flask, request, abort, jsonify
+    from flask import Flask, jsonify
     from flask_snow import Snow
 
     app = Flask(__name__)
-    #app.config.from_object('settings')
     app.config['SNOW_INSTANCE'] = '<instance name>'
     app.config['SNOW_USER'] = '<user name>'
     app.config['SNOW_PASSWORD'] = '<password>'
@@ -62,7 +61,7 @@ Minimal server. Does the following:
 Name it **server.py** and run with ``python server.py``
 
 
-Check out the **examples directory** for more!
+Check out the `examples <https://github.com/rbw0/flask-snow/tree/master/examples/oauth_api_server>`_  for more!
 
 
 Compatibility
