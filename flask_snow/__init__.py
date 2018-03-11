@@ -19,7 +19,8 @@ import warnings
 # noinspection PyProtectedMember
 from flask import current_app, _app_ctx_stack as stack
 
-from pysnow import Client, OAuthClient
+from pysnow import Client, OAuthClient, ParamsBuilder
+
 from .exceptions import ConfigError, InvalidUsage
 
 
@@ -33,24 +34,29 @@ class Snow(object):
     def __init__(self, app=None):
         self._client_type_oauth = self._client_type_basic = False
         self._session = None
-        self._parameters = None
         self._token_updater = None
+        self._parameters = None
 
         if app is not None:
             self.init_app(app)
 
-    def init_app(self, app, session=None):
+    def init_app(self, app, session=None, parameters=None):
         """Initializes snow extension
 
         Set config default and find out which client type to use
 
         :param app: App passed from constructor or directly to init_app (factory)
         :param session: requests-compatible session to pass along to init_app
+        :param parameters: `ParamsBuilder` object passed to `Client` after instantiation
         :raises:
             - ConfigError - if unable to determine client type
         """
 
+        if parameters is not None and not isinstance(parameters, ParamsBuilder):
+            raise InvalidUsage("parameters should be a pysnow.ParamsBuilder object, not %r" % type(parameters).__name__)
+
         self._session = session
+        self._parameters = parameters
 
         app.config.setdefault('SNOW_INSTANCE', None)
         app.config.setdefault('SNOW_HOST', None)
@@ -167,6 +173,10 @@ class Snow(object):
                     client = self._get_oauth_client()
                 else:
                     client = self._get_basic_client()
+
+                if self._parameters:
+                    # Set parameters passed on app init
+                    client.parameters = self._parameters
 
                 ctx.snow = {
                     'client': client,

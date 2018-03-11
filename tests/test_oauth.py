@@ -2,8 +2,8 @@
 
 from unittest import TestCase
 from flask import Flask
-from pysnow import OAuthClient, Resource
-from flask_snow import Snow
+from pysnow import OAuthClient, Resource, ParamsBuilder
+from flask_snow import Snow, InvalidUsage
 from flask_snow.exceptions import ConfigError
 
 
@@ -96,6 +96,28 @@ class TestSnow(FlaskTestCase):
         with self.app.app_context():
             client = snow.connection['client']
             self.assertEqual(type(client), OAuthClient)
+
+    def test_invalid_params(self):
+        """passing a non-ParamsBuilder object to init_app() should raise `InvalidUsage`"""
+
+        snow = Snow()
+        self.assertRaises(InvalidUsage, snow.init_app, self.app, parameters={'test': 'test'})
+
+    def test_params_builder(self):
+        """passing a ParamsBuilder object to init_app() should set `Client` parameters"""
+
+        pb = ParamsBuilder()
+        pb.add_custom({'test': 'test'})
+
+        snow = Snow()
+        snow.init_app(self.app, parameters=pb)
+
+        snow.token_updater = token_updater
+
+        with self.app.app_context():
+            client = snow.connection['client']
+            p = client.parameters.as_dict()
+            self.assertEqual('test' in p, True)
 
     def test_create_resource(self):
         """resource should be instance of pysnow.Resource and be contained in the app context"""
