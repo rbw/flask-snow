@@ -10,20 +10,21 @@
 flask-snow
 ===========
 
-Build apps on top of the ServiceNow REST API using the fantastic `Flask micro-framework <http://flask.pocoo.org>`_, with the help of the `pysnow library <https://github.com/rbw0/pysnow>`_.
+Build apps on top of the ServiceNow REST API using the lightweight `Flask microframework <http://flask.pocoo.org>`_
 
-Additionally, the extension supports OAuth for a seamless authentication & authorization experience.
+- Uses the `pysnow library <https://github.com/rbw0/pysnow>`_.
+- Supports OAuth for a seamless authentication / authorization experience.
+
+Installation
+------------
+
+$ pip install flask-snow
 
 
 Documentation
 -------------
 The documentation can be found `here <http://flask-snow.readthedocs.org/>`_
 
-
-Installation
-------------
-
-$ pip install flask-snow
 
 Usage
 -----
