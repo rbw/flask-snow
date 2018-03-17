@@ -12,7 +12,7 @@
 """
 
 __author__ = "Robert Wikman <rbw@vault13.org>"
-__version__ = "0.2.5"
+__version__ = "0.2.6"
 
 import warnings
 
@@ -183,4 +183,4 @@ class Snow(object):
                     'resources': {}
                 }
 
-        return ctx.snow
+            return ctx.snow
