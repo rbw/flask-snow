@@ -37,7 +37,7 @@ def snow_resource(f):
             client = ps.connection['client']
 
             if session['token'] and hasattr(client, 'token') and client.token is None:
-                ps.set_token(session['token'])
+                client.set_token(session['token'])
 
         try:
             return f(*args, **kwargs)
