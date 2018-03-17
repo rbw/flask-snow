@@ -183,4 +183,4 @@ class Snow(object):
                     'resources': {}
                 }
 
-        return ctx.snow
+            return ctx.snow
