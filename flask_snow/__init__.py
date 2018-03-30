@@ -102,6 +102,10 @@ class Snow(object):
 
         self._token_updater = token_updater
 
+    @property
+    def token(self):
+        return self.connection['client'].token
+
     def set_token(self, token):
         """Calls token_updater callback with the new token after updating the `pysnow.Client` object in the app context
 
