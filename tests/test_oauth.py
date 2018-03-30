@@ -178,7 +178,5 @@ class TestSnow(FlaskTestCase):
         snow = Snow(self.app)
 
         with self.app.app_context():
-            client = snow.connection['client']
             snow.set_token(mock_token)
-
-            self.assertEqual(client.token, mock_token)
+            self.assertEqual(snow.token, mock_token)
