@@ -12,7 +12,7 @@
 """
 
 __author__ = "Robert Wikman <rbw@vault13.org>"
-__version__ = "0.2.7"
+__version__ = "0.2.8"
 
 import warnings
 
