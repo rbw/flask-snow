@@ -12,7 +12,7 @@
 """
 
 __author__ = "Robert Wikman <rbw@vault13.org>"
-__version__ = "0.2.6"
+__version__ = "0.2.7"
 
 import warnings
 
@@ -109,9 +109,6 @@ class Snow(object):
         """
 
         self.connection['client'].set_token(token)
-
-        if self._token_updater:
-            self._token_updater(token)
 
     def _get_basic_client(self):
         return Client(
