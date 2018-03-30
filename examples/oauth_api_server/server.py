@@ -16,8 +16,8 @@ app.config.from_object('settings')
 # Configure logging, specifically for the pysnow library
 dictConfig(app.config['LOGGING'])
 
-ps = Snow()
-ps.init_app(app)
+snow = Snow()
+snow.init_app(app)
 
 
 def token_updater(updated_token):
@@ -25,19 +25,17 @@ def token_updater(updated_token):
     session['token'] = updated_token
 
 
-ps.token_updater = token_updater
+snow.token_updater = token_updater
 
 
 def snow_resource(f):
     @wraps(f)
     def inner(*args, **kwargs):
-        if session.get('token') is None:
+        if not session.get('token'):
             abort(401, {'error': 'you must be authenticated to access this resource'})
-        else:
-            client = ps.connection['client']
 
-            if session['token'] and hasattr(client, 'token') and client.token is None:
-                client.set_token(session['token'])
+        if not snow.token:
+            snow.set_token(session['token'])
 
         try:
             return f(*args, **kwargs)
@@ -57,7 +55,7 @@ def auth():
         abort(401, {'error': 'you must provide a username and password'})
 
     try:
-        client = ps.connection['client']
+        client = snow.connection['client']
         session['token'] = client.generate_token(username, password)
         return jsonify({'result': 'authentication successful!'})
     except TokenCreateError as e:
@@ -74,7 +72,7 @@ def auth():
 def incident_list():
     limit = request.args.get('limit') or 10
 
-    r = ps.resource(api_path='/table/incident')
+    r = snow.resource(api_path='/table/incident')
     data = r.get(query={}, limit=limit).all()
 
     return jsonify(list(data))
@@ -83,7 +81,7 @@ def incident_list():
 @app.route('/incidents/<number>')
 @snow_resource
 def incident(number):
-    r = ps.resource(api_path='/table/incident')
+    r = snow.resource(api_path='/table/incident')
     data = r.get(query={'number': number}).one()
 
     return jsonify(data)
