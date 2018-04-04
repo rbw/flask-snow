@@ -55,8 +55,7 @@ def auth():
         abort(401, {'error': 'you must provide a username and password'})
 
     try:
-        client = snow.connection['client']
-        session['token'] = client.generate_token(username, password)
+        session['token'] = snow.connection.generate_token(username, password)
         return jsonify({'result': 'authentication successful!'})
     except TokenCreateError as e:
         if e.snow_status_code == 400 and e.description == 'access_denied':
