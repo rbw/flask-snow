@@ -33,7 +33,7 @@ class TestSnow(FlaskTestCase):
         snow.init_app(self.app, session=s)
 
         with self.app.app_context():
-            client = snow.connection['client']
+            client = snow.connection
             self.assertEqual(type(client.session), Session)
 
 
