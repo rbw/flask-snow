@@ -34,8 +34,8 @@ def snow_resource(f):
         if not session.get('token'):
             abort(401, {'error': 'you must be authenticated to access this resource'})
 
-        if not snow.connection.token:
-            snow.connection.set_token(session['token'])
+        if not snow.token:
+            snow.set_token(session['token'])
 
         try:
             return f(*args, **kwargs)
@@ -70,7 +70,7 @@ def auth():
 @snow_resource
 def incident_list():
     limit = request.args.get('limit') or 10
-
+    
     r = snow.connection.resource(api_path='/table/incident')
     data = r.get(query={}, limit=limit).all()
 
