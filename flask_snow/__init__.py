@@ -12,7 +12,7 @@
 """
 
 __author__ = "Robert Wikman <rbw@vault13.org>"
-__version__ = "0.2.7"
+__version__ = "0.2.8"
 
 import warnings
 
@@ -102,18 +102,6 @@ class Snow(object):
 
         self._token_updater = token_updater
 
-    @property
-    def token(self):
-        return self.connection['client'].token
-
-    def set_token(self, token):
-        """Calls token_updater callback with the new token after updating the `pysnow.Client` object in the app context
-
-        :param token: token dict returned from previous interactions with flask-snow
-        """
-
-        self.connection['client'].set_token(token)
-
     def _get_basic_client(self):
         return Client(
             instance=current_app.config['SNOW_INSTANCE'],
@@ -133,27 +121,6 @@ class Snow(object):
             token_updater=self._token_updater,
             use_ssl=current_app.config['SNOW_USE_SSL']
         )
-
-    def resource(self, *args, **kwargs):
-        """Creates a new :class:`pysnow.Resource` object if it doesn't exist in its clients context
-
-        :param args: args to pass along to pysnow.Resource
-        :param kwargs: kwargs to pass along to pysnow.Resource
-        :return: :class:`pysnow.Resource` object
-        """
-
-        resource_id = "pysnow__%s.%s" % (kwargs.get('base_path', '/api/now'), kwargs.get('api_path'))
-
-        conn = self.connection
-
-        if resource_id not in conn['resources']:
-            # Create new resource and add to context
-            conn['resources'].update({resource_id: conn['client'].resource(*args, **kwargs)})
-        else:
-            # Reuse object, reset sysparms
-            conn['resources'][resource_id].parameters = conn['client'].parameters
-
-        return conn['resources'][resource_id]
 
     @property
     def connection(self):
@@ -179,9 +146,6 @@ class Snow(object):
                     # Set parameters passed on app init
                     client.parameters = self._parameters
 
-                ctx.snow = {
-                    'client': client,
-                    'resources': {}
-                }
+                ctx.snow = client
 
             return ctx.snow

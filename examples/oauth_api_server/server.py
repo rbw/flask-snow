@@ -55,8 +55,7 @@ def auth():
         abort(401, {'error': 'you must provide a username and password'})
 
     try:
-        client = snow.connection['client']
-        session['token'] = client.generate_token(username, password)
+        session['token'] = snow.connection.generate_token(username, password)
         return jsonify({'result': 'authentication successful!'})
     except TokenCreateError as e:
         if e.snow_status_code == 400 and e.description == 'access_denied':
@@ -71,8 +70,8 @@ def auth():
 @snow_resource
 def incident_list():
     limit = request.args.get('limit') or 10
-
-    r = snow.resource(api_path='/table/incident')
+    
+    r = snow.connection.resource(api_path='/table/incident')
     data = r.get(query={}, limit=limit).all()
 
     return jsonify(list(data))
@@ -81,7 +80,7 @@ def incident_list():
 @app.route('/incidents/<number>')
 @snow_resource
 def incident(number):
-    r = snow.resource(api_path='/table/incident')
+    r = snow.connection.resource(api_path='/table/incident')
     data = r.get(query={'number': number}).one()
 
     return jsonify(data)

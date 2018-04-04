@@ -2,7 +2,7 @@
 
 from unittest import TestCase
 from flask import Flask
-from pysnow import OAuthClient, Resource, ParamsBuilder
+import pysnow
 from flask_snow import Snow, InvalidUsage
 from flask_snow.exceptions import ConfigError
 
@@ -94,8 +94,8 @@ class TestSnow(FlaskTestCase):
         snow.token_updater = token_updater
 
         with self.app.app_context():
-            client = snow.connection['client']
-            self.assertEqual(type(client), OAuthClient)
+            client = snow.connection
+            self.assertEqual(type(client), pysnow.OAuthClient)
 
     def test_invalid_params(self):
         """passing a non-ParamsBuilder object to init_app() should raise `InvalidUsage`"""
@@ -106,7 +106,7 @@ class TestSnow(FlaskTestCase):
     def test_params_builder(self):
         """passing a ParamsBuilder object to init_app() should set `Client` parameters"""
 
-        pb = ParamsBuilder()
+        pb = pysnow.ParamsBuilder()
         pb.add_custom({'test': 'test'})
 
         snow = Snow()
@@ -115,62 +115,9 @@ class TestSnow(FlaskTestCase):
         snow.token_updater = token_updater
 
         with self.app.app_context():
-            client = snow.connection['client']
+            client = snow.connection
             p = client.parameters.as_dict()
             self.assertEqual('test' in p, True)
-
-    def test_create_resource(self):
-        """resource should be instance of pysnow.Resource and be contained in the app context"""
-
-        snow = Snow()
-        snow.init_app(self.app)
-        snow.token_updater = token_updater
-
-        with self.app.app_context():
-            api_path = '/table/incident'
-            base_path = '/api/now'
-
-            snow.set_token(mock_token)
-
-            r = snow.resource(api_path=api_path, base_path=base_path)
-
-            resource_id = "pysnow__%s.%s" % (base_path, api_path)
-            resource_in_resources = resource_id in snow.connection['resources']
-
-            # Test resource type
-            self.assertEqual(type(r), Resource)
-
-            # Test resource id
-            self.assertEqual(resource_in_resources, True)
-
-    def test_reuse_resource(self):
-        """reused resources should have its bound params reset but refer to the same `Resource` object"""
-
-        snow = Snow()
-        snow.init_app(self.app)
-        snow.token_updater = token_updater
-
-        with self.app.app_context():
-            api_path = '/table/incident'
-            base_path = '/api/now'
-
-            snow.set_token(mock_token)
-
-            r1 = snow.resource(api_path=api_path, base_path=base_path)
-            r1.parameters.add_custom({'test': 'test'})
-            r1_params_dict = r1.parameters.as_dict()
-
-            # The added parameter should be available in params dict
-            self.assertEqual(r1_params_dict['test'], 'test')
-
-            r2 = snow.resource(api_path=api_path, base_path=base_path)
-            r2_params_dict = r1.parameters.as_dict()
-
-            # The reused resource should be reused
-            self.assertEqual(r1, r2)
-
-            # Params of a reused resource should /not/ be available
-            self.assertEqual('test' in r2_params_dict, False)
 
     def test_set_token(self):
         """After passing a token to Snow.set_token(), the pysnow.OAuthClient.token should equal the passed token"""
@@ -178,5 +125,5 @@ class TestSnow(FlaskTestCase):
         snow = Snow(self.app)
 
         with self.app.app_context():
-            snow.set_token(mock_token)
-            self.assertEqual(snow.token, mock_token)
+            snow.connection.set_token(mock_token)
+            self.assertEqual(snow.connection.token, mock_token)
